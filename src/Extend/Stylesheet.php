@@ -17,8 +17,10 @@ class Stylesheet
     use AssetList;
 
     const CACHE_KEY = 'waterhole.stylesheet';
+
     const FILE_EXTENSION = 'css';
 }
 
-Stylesheet::add(__DIR__ . '/../../resources/dist/global.css');
-Stylesheet::add(__DIR__ . '/../../resources/dist/cp.css', bundle: 'cp');
+Stylesheet::add(__DIR__.'/../../resources/dist/global.css');
+Stylesheet::add(__DIR__.'/../../resources/css/custom.css');
+Stylesheet::add(__DIR__.'/../../resources/dist/cp.css', bundle: 'cp');
