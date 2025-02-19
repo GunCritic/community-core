@@ -69,7 +69,7 @@ class RegisterController extends Controller
             abort(400, 'Password registration is disabled');
         }
 
-        event(new Registered($user));
+//        event(new Registered($user));
 
         if (!$request->attributes->has('waterhole_original_user')) {
             Auth::login($user);
