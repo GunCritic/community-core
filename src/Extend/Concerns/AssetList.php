@@ -23,7 +23,7 @@ trait AssetList
      */
     public static function add(string $file, string $bundle = 'default'): void
     {
-        if (! in_array($file, static::$assets[$bundle] ?? [])) {
+        if (!in_array($file, static::$assets[$bundle] ?? [])) {
             static::$assets[$bundle][] = $file;
         }
     }
@@ -46,13 +46,12 @@ trait AssetList
                 $files,
                 Cache::rememberForever($key, function () use ($bundle) {
                     $assets = static::$assets[$bundle] ?? [];
-
                     return $assets ? [static::compile($assets, $bundle)] : [];
                 }),
             );
         }
 
-        return array_map(fn ($file) => asset(Storage::disk('s3')->url($file)), $files);
+        return array_map(fn($file) => asset(Storage::disk('public')->url($file)), $files);
     }
 
     /**
@@ -73,7 +72,7 @@ trait AssetList
         $key = static::cacheKey($bundle);
 
         if ($files = Cache::get($key)) {
-            Storage::disk('s3')->delete($files);
+            Storage::disk('public')->delete($files);
         }
 
         Cache::forget($key);
@@ -81,7 +80,7 @@ trait AssetList
 
     private static function cacheKey(string $bundle): string
     {
-        return static::CACHE_KEY.'.'.$bundle;
+        return static::CACHE_KEY . '.' . $bundle;
     }
 
     private static function compile(array $assets, string $bundle): string
@@ -92,16 +91,14 @@ trait AssetList
             if (is_callable($source) && ($output = $source())) {
                 $content .= "$output\n";
             } else {
-                $content .= file_get_contents($source)."\n";
+                $content .= file_get_contents($source) . "\n";
             }
         }
 
         $hash = substr(sha1($content), 0, 8);
 
-        ray(static::FILE_EXTENSION."/$bundle-$hash.".static::FILE_EXTENSION);
-
-        Storage::disk('s3')->put(
-            $compiled = 'waterhole/'.static::FILE_EXTENSION."/$bundle-$hash.".static::FILE_EXTENSION,
+        Storage::disk('public')->put(
+            $compiled = static::FILE_EXTENSION . "/$bundle-$hash." . static::FILE_EXTENSION,
             $content,
         );
 
