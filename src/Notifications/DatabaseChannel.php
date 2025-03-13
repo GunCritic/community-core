@@ -5,6 +5,7 @@ namespace Waterhole\Notifications;
 use Illuminate\Notifications\Channels\DatabaseChannel as BaseDatabaseChannel;
 use Illuminate\Notifications\Notification;
 use Waterhole\Events\NotificationReceived;
+use Waterhole\Models\Notification as WaterholeNotification;
 
 class DatabaseChannel extends BaseDatabaseChannel
 {
@@ -13,7 +14,9 @@ class DatabaseChannel extends BaseDatabaseChannel
         /** @var \Waterhole\Models\Notification $model */
         $model = parent::send($notifiable, $notification);
 
-        broadcast(new NotificationReceived($model));
+        if ($model instanceof WaterholeNotification) {
+            broadcast(new NotificationReceived($model));
+        }
 
         return $notification;
     }
