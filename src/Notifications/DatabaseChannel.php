@@ -11,12 +11,12 @@ class DatabaseChannel extends BaseDatabaseChannel
 {
     public function send($notifiable, Notification $notification)
     {
-        /** @var \Waterhole\Models\Notification $model */
+        /** @var WaterholeNotification $model */
         $model = parent::send($notifiable, $notification);
 
-        if ($model instanceof WaterholeNotification) {
-            broadcast(new NotificationReceived($model));
-        }
+//        if ($model instanceof WaterholeNotification) {
+//            broadcast(new NotificationReceived($model));
+//        }
 
         return $notification;
     }
