@@ -27,7 +27,7 @@ class Upload extends Model
             $attributes['height'] = $image->height();
         }
 
-        Storage::disk('public')->putFile('uploads', $file);
+        Storage::disk(config('filesystems.default'))->putFile('uploads', $file);
 
         // @phpstan-ignore-next-line
         return new static($attributes);
@@ -36,7 +36,7 @@ class Upload extends Model
     protected static function booted(): void
     {
         static::deleted(function (self $upload) {
-            Storage::disk('public')->delete('uploads/' . $upload->filename);
+            Storage::disk(config('filesystems.default'))->delete('uploads/' . $upload->filename);
         });
     }
 
