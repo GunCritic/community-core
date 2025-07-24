@@ -4,8 +4,8 @@ namespace Waterhole\Models\Concerns;
 
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Http\UploadedFile;
-use Intervention\Image\Facades\Image;
 use Intervention\Image\Image as ImageObject;
+use Intervention\Image\ImageManager;
 
 /**
  * Methods to manage a model's `icon` attribute.
@@ -41,7 +41,7 @@ trait HasIcon
         if ($icon['type'] === 'file') {
             if ($icon['file'] ?? null instanceof UploadedFile) {
                 // TODO: support SVG
-                $this->uploadImage(Image::make($icon['file']), 'icon_file', 'icons', function (
+                $this->uploadImage(ImageManager::imagick()->read($icon['file']), 'icon_file', 'icons', function (
                     ImageObject $image,
                 ) {
                     return $image

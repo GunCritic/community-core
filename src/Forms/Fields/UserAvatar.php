@@ -4,7 +4,7 @@ namespace Waterhole\Forms\Fields;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Validator;
-use Intervention\Image\Facades\Image;
+use Intervention\Image\ImageManager;
 use Waterhole\Forms\Field;
 use Waterhole\Models\User;
 
@@ -51,7 +51,7 @@ class UserAvatar extends Field
         }
 
         if ($file = $request->file('avatar')) {
-            $this->model->uploadAvatar(Image::make($file));
+            $this->model->uploadAvatar(ImageManager::imagick()->read($file));
         }
     }
 }

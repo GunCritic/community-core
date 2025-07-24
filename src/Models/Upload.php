@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Http\File;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
-use Intervention\Image\Facades\Image;
+use Intervention\Image\ImageManager;
 
 class Upload extends Model
 {
@@ -22,7 +22,7 @@ class Upload extends Model
         ];
 
         if (str_starts_with($attributes['type'], 'image/')) {
-            $image = Image::make($file);
+            $image = ImageManager::imagick()->read($file);
             $attributes['width'] = $image->width();
             $attributes['height'] = $image->height();
         }
