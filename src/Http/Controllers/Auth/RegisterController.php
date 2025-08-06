@@ -5,7 +5,6 @@ namespace Waterhole\Http\Controllers\Auth;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Intervention\Image\Facades\Image;
 use Intervention\Image\ImageManager;
 use Waterhole\Auth\Providers;
 use Waterhole\Auth\SsoPayload;
