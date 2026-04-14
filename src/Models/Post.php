@@ -145,7 +145,7 @@ class Post extends Model
      */
     public function scopeWithUnreadCommentsCount(Builder $query): void
     {
-        $query->leftJoinRelation('userState')->selectSub(
+        $query->addSelect('posts.*')->leftJoinRelation('userState')->selectSub(
             Comment::query()
                 ->withoutGlobalScope('visible')
                 ->selectRaw('COUNT(*)')
